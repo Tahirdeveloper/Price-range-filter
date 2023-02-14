@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Filter</title>
+    <link rel="stylesheet" href="jquery-ui.css">
+    <style>
+        input, #label{
+            margin:0px auto;
+            border: 2px solid white;
+            padding: 5px;
+            border-radius: 50%;
+            text-align: center;
+            color: white;
+            margin:20px;
+            background-color: orange;
+            font-weight: bold;
+            font-size: larger;
+            
+        }
+        #slider{
+            margin:0px auto;
+          width: 500px;
+        }
+        #mytable{
+            margin:0px auto;
+            width:400px;
+            border: 2px solid orange;
+            margin-top: 30px;
+            padding:5px;
+        }
+        h2{
+            text-align:center;
+            color: darkred;
+        }
+        #mytable  td,th{
+            border: 2px solid darkred;
+            padding:10px;
+            color:darkred;
+        }
+    </style>
+</head>
+<body>
+    <div id="label">Price Range:<input type="text" id="range"></div>
+    <h2>Select Price According to Your Budget</h2>
+    <div class="container" id="slider"></div>
+    <div id="output"></div>
+    <script src="jquery.js"></script>
+    <script src="jquery-ui.js"></script>
+    <script>
+
+let productList={
+            "Shoes":100,
+            "T-shirt": 150,
+            "Hair Brush": 40,
+            "Tooth Past":10,
+            "Shampo": 200,
+            "Hair Oil":240,
+            "Perfieum": 275,
+            "Coat"  : 300,
+            "Women-Jersy":330,
+            "Makeup": 370,
+            "silver-rings":400,
+            "Room Spray": 420,
+            "Hair Dryier":450,
+            "Watch" :500,
+        }
+        $(function(){
+            
+               $("#slider").slider({
+                range: true,
+                min :  0,
+                max :  500,
+                values: [70, 200],
+                slide : function(event, ui){
+                    
+                    $("#range").val("$" + ui.values[0]+ " - "+ "$"+ ui.values[1]);
+                },
+                change: function(event,ui)
+                {
+                    tableData(ui.values[0],ui.values[1]);
+                }
+            });
+          
+             $("#range").val("$"+ $("#slider").slider("values",0)+ " - $"+ $("#slider").slider("values",1));
+            tableData($("#slider").slider("values",0),$("#slider").slider("values",1));
+        });
+       function tableData(min,max)
+       {
+
+       
+        let divElem="<table id='mytable'><tr id='rows'><th>Product_Name</th><th>Price($)</th><tr>";
+         for(let item in productList)
+            {
+                if(productList[item]>=min && productList[item]<=max){
+                   divElem +="<tr><td>"+item+"</td><td>$"+productList[item]+"</td>";
+                }
+            }
+            divElem +="</table>";
+            $("#output").html(divElem);
+       }
+    </script>
+</body>
+</html>
